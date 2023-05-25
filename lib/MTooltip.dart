@@ -174,20 +174,7 @@ class MTooltipState extends State<MTooltip>
   }
 
   Show() {
-    print(
-        "Coord ${widget.context.findRenderObject()?.getTransformTo(null).getTranslation()}");
-
     ensureTooltip();
-
-    // showGeneralDialog(
-    //   context: widget.context,
-    //   barrierColor: Colors.black54,
-    //   barrierDismissible: widget.barrierDismissible,
-    //   barrierLabel: 'Label',
-    //   pageBuilder: (context,_,__){
-    //     return tooltipContainer();
-    //   }
-    // );
   }
 
   _newEntry() {

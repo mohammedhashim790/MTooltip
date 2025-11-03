@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-enum TooltipAlign{
-  TOP,
-  BOTTOM,
-}
+enum TooltipAlign { top, bottom }
 
 class ToolTipCustomShape extends ShapeBorder {
   final bool usePadding;
 
   final TooltipAlign tooltipAlign;
 
-  ToolTipCustomShape({this.usePadding = true,this.tooltipAlign = TooltipAlign.BOTTOM});
+  const ToolTipCustomShape({
+    this.usePadding = true,
+    this.tooltipAlign = TooltipAlign.bottom,
+  });
 
   @override
   EdgeInsetsGeometry get dimensions =>
@@ -21,21 +21,26 @@ class ToolTipCustomShape extends ShapeBorder {
 
   @override
   Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
-    rect =
-        Rect.fromPoints(rect.topLeft, rect.bottomRight - const Offset(0, 20));
+    rect = Rect.fromPoints(
+      rect.topLeft,
+      rect.bottomRight - const Offset(0, 20),
+    );
 
     //Set Rectangle with it's border and borderRadius
     Path path = Path()
       ..addRRect(
-          RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 10)));
+        RRect.fromRectAndRadius(rect, Radius.circular(rect.height / 10)),
+      );
 
-    if(tooltipAlign == TooltipAlign.BOTTOM){
-      path..moveTo(rect.topCenter.dx - 20, rect.topCenter.dy)
+    if (tooltipAlign == TooltipAlign.bottom) {
+      path
+        ..moveTo(rect.topCenter.dx - 20, rect.topCenter.dy)
         ..relativeLineTo(20, 0)
         ..relativeLineTo(-10, -10)
         ..close();
-    }else{
-      path..moveTo(rect.bottomCenter.dx - 10, rect.bottomCenter.dy)
+    } else {
+      path
+        ..moveTo(rect.bottomCenter.dx - 10, rect.bottomCenter.dy)
         ..relativeLineTo(10, 10)
         ..relativeLineTo(10, -10)
         ..close();

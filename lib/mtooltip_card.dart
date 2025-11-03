@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MTooltipCard extends StatelessWidget {
   final String title;
@@ -9,22 +8,26 @@ class MTooltipCard extends StatelessWidget {
   final int index;
   final Function(int) onTap;
 
-  const MTooltipCard(
-      {Key? key,
-      required this.title,
-      required this.titleColor,
-      required this.paginationLimit,
-      required this.pagination,
-      required this.index,
-      required this.onTap})
-      : super(key: key);
+  const MTooltipCard({
+    super.key,
+    required this.title,
+    required this.titleColor,
+    required this.paginationLimit,
+    required this.pagination,
+    required this.index,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     // Using Scaffold to avoid ancestor material missing
     return Padding(
-      padding:
-          const EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0, bottom: 16.0),
+      padding: const EdgeInsets.only(
+        left: 8.0,
+        right: 8.0,
+        top: 16.0,
+        bottom: 16.0,
+      ),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         child: IntrinsicHeight(
@@ -37,9 +40,10 @@ class MTooltipCard extends StatelessWidget {
                 child: Text(
                   title,
                   style: TextStyle(
-                      color: titleColor,
-                      fontSize: 16.sp,
-                      decoration: TextDecoration.none),
+                    color: titleColor,
+                    fontSize: 16,
+                    decoration: TextDecoration.none,
+                  ),
                 ),
               ),
               Expanded(
@@ -65,22 +69,25 @@ class MTooltipCard extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                        flex: 1,
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                "${pagination}/${paginationLimit}",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: Colors.white,
-                                    decoration: TextDecoration.none),
-                              ),
-                            ))),
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(
+                            "$pagination/$paginationLimit",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              decoration: TextDecoration.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

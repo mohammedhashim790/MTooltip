@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'TooltipCustomShape.dart';
+
+import 'tooltip_custom_shape.dart';
 
 class _MTooltipPositionDelegate extends SingleChildLayoutDelegate {
   /// Creates a delegate for computing the layout of a tooltip.
@@ -13,9 +13,9 @@ class _MTooltipPositionDelegate extends SingleChildLayoutDelegate {
     required this.target,
     required this.verticalOffset,
     required this.preferBelow,
-  })  : assert(target != null),
-        assert(verticalOffset != null),
-        assert(preferBelow != null);
+  }) : assert(target != null),
+       assert(verticalOffset != null),
+       assert(preferBelow != null);
 
   /// The offset of the target the tooltip is positioned near in the global
   /// coordinate system.
@@ -74,7 +74,7 @@ class MTooltip extends StatefulWidget {
   final Widget tooltipContent;
 
   const MTooltip({
-    Key? key,
+    super.key,
     required this.child,
     required this.context,
     required this.tooltipContent,
@@ -82,8 +82,8 @@ class MTooltip extends StatefulWidget {
     this.barrierColor = const Color(0x80000000),
     this.barrierDismissible = true,
     this.usePadding = true,
-    this.tooltipAlign = TooltipAlign.BOTTOM,
-  }) : super(key: key);
+    this.tooltipAlign = TooltipAlign.bottom,
+  });
 
   @override
   State<MTooltip> createState() => MTooltipState();
@@ -163,17 +163,15 @@ class MTooltipState extends State<MTooltip>
 
   @override
   void reassemble() {
-    // TODO: implement reassemble
     super.reassemble();
-    // Show();
   }
 
   @override
   Widget build(BuildContext context) {
-    return IndexedSemantics(index: 50, child: widget.child);
+    return IndexedSemantics(index: 99, child: widget.child);
   }
 
-  Show() {
+  show() {
     ensureTooltip();
   }
 
@@ -189,7 +187,7 @@ class MTooltipState extends State<MTooltip>
     final OverlayState overlayState = Overlay.of(
       context,
       debugRequiredFor: widget,
-    )!;
+    );
 
     final RenderBox box = context.findRenderObject()! as RenderBox;
     final Offset target = box.localToGlobal(
@@ -204,9 +202,10 @@ class MTooltipState extends State<MTooltip>
       child: CustomSingleChildLayout(
         delegate: _MTooltipPositionDelegate(
           target: target,
-          verticalOffset:
-              (widget.tooltipAlign == TooltipAlign.BOTTOM) ? 80.0 : 60.0,
-          preferBelow: widget.tooltipAlign == TooltipAlign.BOTTOM,
+          verticalOffset: (widget.tooltipAlign == TooltipAlign.bottom)
+              ? 80.0
+              : 60.0,
+          preferBelow: widget.tooltipAlign == TooltipAlign.bottom,
         ),
         child: tooltipWidget,
       ),
@@ -218,21 +217,19 @@ class MTooltipState extends State<MTooltip>
     );
 
     _entry = OverlayEntry(
-        builder: (BuildContext context) => overlay,
-        opaque: false,
-        maintainState: true);
+      builder: (BuildContext context) => overlay,
+      opaque: false,
+      maintainState: true,
+    );
     _isConcealed = false;
     overlayState.insert(_entry!);
 
-    // if (_mouseIsConnected) {
-    //  Remove All Tooltips before showing
     MTooltip.concealAll();
-    // MTooltip._concealOtherTooltips(this);
-    // }
     // assert(!MTooltip._openedTooltips.contains(this));
 
-    if (!MTooltip._openedTooltips.contains(this))
+    if (!MTooltip._openedTooltips.contains(this)) {
       MTooltip._openedTooltips.add(this);
+    }
   }
 
   Widget createWidget() {
@@ -278,9 +275,7 @@ class MTooltipState extends State<MTooltip>
     _showTimer = null;
     _forceRemoval = false;
     if (_isConcealed) {
-      // if (_mouseIsConnected) {
       MTooltip._concealOtherTooltips(this);
-      // }
       _revealTooltip();
       return true;
     }
@@ -310,7 +305,7 @@ class MTooltipState extends State<MTooltip>
       final OverlayState overlayState = Overlay.of(
         context,
         debugRequiredFor: widget,
-      )!;
+      );
       overlayState.insert(_entry!);
     }
     _controller.forward();
@@ -336,7 +331,6 @@ class MTooltipState extends State<MTooltip>
 
   void _removeEntry() {
     MTooltip._openedTooltips.remove(this);
-    // _mouseIn.remove(this);
     _dismissTimer?.cancel();
     _dismissTimer = null;
     _showTimer?.cancel();

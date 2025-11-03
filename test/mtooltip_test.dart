@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mtooltip/MTooltipCard.dart';
+import 'package:mtooltip/mtooltip_card.dart';
 
 void main() {
   testWidgets('Render Test', (WidgetTester tester) async {
@@ -24,8 +24,7 @@ void main() {
     expect(find.byIcon(Icons.navigate_next), findsOneWidget);
   });
 
-  testWidgets('Tap Test',
-      (WidgetTester tester) async {
+  testWidgets('Tap Test', (WidgetTester tester) async {
     int tappedIndex = -1;
 
     await tester.pumpWidget(

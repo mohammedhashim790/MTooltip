@@ -1,7 +1,8 @@
-
 # Custom Flutter Tooltip
 
-A highly customizable tooltip implementation for Flutter applications that provides enhanced control over tooltip appearance and behavior. Unlike Flutter's default tooltip, this package allows complete customization of the tooltip's shape, position, and content.
+A highly customizable tooltip implementation for Flutter applications that provides enhanced control over tooltip
+appearance and behavior. Unlike Flutter's default tooltip, this package allows complete customization of the tooltip's
+shape, position, and content.
 
 ## Features
 
@@ -17,6 +18,7 @@ A highly customizable tooltip implementation for Flutter applications that provi
 ## Installation
 
 Add this dependency to your `pubspec.yaml` file:
+
 ```
 yaml dependencies: mtooltip: ^0.0.1 responsive_sizer: ^3.1.1
 ``` 
@@ -30,18 +32,21 @@ yaml dependencies: mtooltip: ^0.0.1 responsive_sizer: ^3.1.1
 ## Usage
 
 ### Basic Tooltip
+
 ```
 MTooltip( context: context, tooltipContent: Text('Simple tooltip content'), backgroundColor: Colors.blue, child: Icon(Icons.info), );
 latex_unknown_tag
 ``` 
 
 ### Advanced Tooltip with Custom Card
+
 ```
 MTooltip( context: context, tooltipContent: MTooltipCard( title: 'Welcome to the app!', titleColor: Colors.white, paginationLimit: 3, pagination: 1, index: 0, onTap: (index) { // Handle pagination }, ), backgroundColor: Colors.black87, tooltipAlign: TooltipAlign.TOP, barrierDismissible: true, );
 latex_unknown_tag
 ``` 
 
 ### Tooltip Positioning
+
 ```
 // Bottom aligned tooltip 
 MTooltip( tooltipAlign: TooltipAlign.BOTTOM,...);
@@ -63,6 +68,7 @@ MTooltip( tooltipAlign: TooltipAlign.TOP, ...);
 ## Testing
 
 To run the tests:
+
 ```
 flutter test
 ``` 
@@ -80,6 +86,7 @@ We welcome contributions to improve this tooltip package! Here's how you can hel
 Please make sure to update tests as appropriate and follow the existing coding style.
 
 ## License
+
 ```
 MIT License
 Copyright (c) 2021

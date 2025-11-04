@@ -1,4 +1,6 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:mtooltip/controller/mtooltip_controller.dart';
 import 'package:mtooltip/mtooltip.dart';
 import 'package:mtooltip/tooltip_custom_shape.dart';
 
@@ -33,11 +35,16 @@ class TooltipExample extends StatefulWidget {
 class _TooltipExampleState extends State<TooltipExample> {
   GlobalKey<MTooltipState> state = GlobalKey<MTooltipState>();
 
+  CarouselSliderController buttonCarouselController =
+      CarouselSliderController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
+  MTooltipController mTooltipController = MTooltipController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +57,23 @@ class _TooltipExampleState extends State<TooltipExample> {
         child: IntrinsicHeight(
           child: Column(
             children: [
+              CarouselSlider(
+                items: List.generate(10, (index) {
+                  return Text("$index");
+                }),
+                carouselController: buttonCarouselController,
+                options: CarouselOptions(
+                  autoPlay: false,
+                  enlargeCenterPage: true,
+                  viewportFraction: 0.9,
+                  aspectRatio: 2.0,
+                  initialPage: 2,
+                ),
+              ),
               TextButton(
                 onPressed: () {
-                  // MTooltip.concealAll();
-
-                  state.currentState?.show();
+                  // buttonCarouselController.nextPage();
+                  mTooltipController.show();
                 },
                 child: const Text("Click to Show Bottom"),
               ),
@@ -67,6 +86,7 @@ class _TooltipExampleState extends State<TooltipExample> {
                   backgroundColor: Colors.green,
                   tooltipAlign: TooltipAlign.top,
                   child: const Text("This is a text 123"),
+                  mTooltipController: mTooltipController,
                 ),
               ),
             ],

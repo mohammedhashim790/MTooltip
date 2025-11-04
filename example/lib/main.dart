@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mtooltip/controller/mtooltip_controller.dart';
 import 'package:mtooltip/mtooltip.dart';
@@ -33,17 +32,6 @@ class TooltipExample extends StatefulWidget {
 }
 
 class _TooltipExampleState extends State<TooltipExample> {
-  GlobalKey<MTooltipState> state = GlobalKey<MTooltipState>();
-
-  CarouselSliderController buttonCarouselController =
-      CarouselSliderController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   MTooltipController mTooltipController = MTooltipController();
 
   @override
@@ -57,19 +45,6 @@ class _TooltipExampleState extends State<TooltipExample> {
         child: IntrinsicHeight(
           child: Column(
             children: [
-              CarouselSlider(
-                items: List.generate(10, (index) {
-                  return Text("$index");
-                }),
-                carouselController: buttonCarouselController,
-                options: CarouselOptions(
-                  autoPlay: false,
-                  enlargeCenterPage: true,
-                  viewportFraction: 0.9,
-                  aspectRatio: 2.0,
-                  initialPage: 2,
-                ),
-              ),
               TextButton(
                 onPressed: () {
                   // buttonCarouselController.nextPage();
@@ -80,7 +55,6 @@ class _TooltipExampleState extends State<TooltipExample> {
               Align(
                 alignment: Alignment.center,
                 child: MTooltip(
-                  key: state,
                   context: context,
                   tooltipContent: const Text("This is a text"),
                   backgroundColor: Colors.green,

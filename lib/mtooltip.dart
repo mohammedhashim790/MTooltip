@@ -1,49 +1,55 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:mtooltip/controller/mtooltip_controller.dart';
 import 'package:mtooltip/mtooltip_position_delegate.dart';
 
 import 'tooltip_custom_shape.dart';
 
 class MTooltip extends StatefulWidget {
-  final bool usePadding;
+  bool usePadding;
 
-  final TooltipAlign tooltipAlign;
+  TooltipAlign tooltipAlign;
 
-  final Widget child;
+  Widget child;
 
-  final BuildContext context;
+  BuildContext context;
 
-  final Color barrierColor;
+  Color barrierColor;
 
-  final Color backgroundColor;
+  Color backgroundColor;
 
-  final bool barrierDismissible;
+  bool barrierDismissible;
 
-  final Widget tooltipContent;
+  Widget tooltipContent;
 
   late Duration hoverShowDuration;
   late Duration waitDuration;
 
-  final MTooltipController _mTooltipController;
+  MTooltipController _mTooltipController;
+
+  Duration fadeInDuration;
+  Duration fadeOutDuration;
 
   MTooltip({
     super.key,
     required this.child,
     required this.context,
     required this.tooltipContent,
-    required this.backgroundColor,
+    this.backgroundColor = Colors.black54,
     required MTooltipController mTooltipController,
     Duration? hoverShowDuration,
     Duration? waitDuration,
+    Duration? fadeInDuration,
+    Duration? fadeOutDuration,
     this.barrierColor = const Color(0x80000000),
     this.barrierDismissible = true,
     this.usePadding = true,
     this.tooltipAlign = TooltipAlign.bottom,
   }) : _mTooltipController = mTooltipController,
        waitDuration = waitDuration ?? Duration(seconds: 0),
+       fadeInDuration = fadeInDuration ?? Duration(seconds: 1),
+       fadeOutDuration = fadeOutDuration ?? Duration(seconds: 1),
        hoverShowDuration = hoverShowDuration ?? Duration(seconds: 10);
 
   @override
@@ -52,9 +58,6 @@ class MTooltip extends StatefulWidget {
 
 class MTooltipState extends State<MTooltip>
     with SingleTickerProviderStateMixin {
-  static const Duration _fadeInDuration = Duration(seconds: 3);
-  static const Duration _fadeOutDuration = Duration(seconds: 4);
-
   late AnimationController _controller;
   OverlayEntry? _entry;
   Timer? _dismissTimer;
@@ -75,11 +78,11 @@ class MTooltipState extends State<MTooltip>
   void initState() {
     super.initState();
     _isConcealed = false;
-    _forceRemoval = false;
-    _mouseIsConnected = RendererBinding.instance.mouseTracker.mouseIsConnected;
+    // _forceRemoval = false;
+    // _mouseIsConnected = RendererBinding.instance.mouseTracker.mouseIsConnected;
     _controller = AnimationController(
-      duration: _fadeInDuration,
-      reverseDuration: _fadeOutDuration,
+      duration: widget.fadeInDuration,
+      reverseDuration: widget.fadeInDuration,
       vsync: this,
     );
 
@@ -91,6 +94,13 @@ class MTooltipState extends State<MTooltip>
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _visible = TooltipVisibility.of(context);
+  }
+
+  @override
+  void didUpdateWidget(covariant MTooltip oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Rebuild Widget on changes requested
+    _newEntry();
   }
 
   @override
@@ -172,14 +182,17 @@ class MTooltipState extends State<MTooltip>
       return;
     }
     _isConcealed = true;
+
     _dismissTimer?.cancel();
     _dismissTimer = null;
     _showTimer?.cancel();
     _showTimer = null;
-    if (_entry != null) {
-      _entry!.remove();
-    }
-    _controller.reverse();
+
+    _controller.reverse().then((_) {
+      if (_entry != null) {
+        _entry!.remove();
+      }
+    });
   }
 
   bool _showTooltip() {

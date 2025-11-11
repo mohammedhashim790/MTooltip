@@ -56,9 +56,9 @@ class _TooltipExampleState extends State<TooltipExample> {
                 alignment: Alignment.center,
                 child: MTooltip(
                   context: context,
-                  tooltipContent: const Text("This is a text"),
-                  backgroundColor: Colors.green,
-                  tooltipAlign: TooltipAlign.top,
+                  backgroundColor: Colors.redAccent,
+                  tooltipContent: Text("This is a text 12313"),
+                  tooltipAlign: TooltipAlign.bottom,
                   child: const Text("This is a text 123"),
                   mTooltipController: mTooltipController,
                 ),

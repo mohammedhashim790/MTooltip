@@ -7,7 +7,7 @@ import 'package:mtooltip/mtooltip_position_delegate.dart';
 import 'tooltip_custom_shape.dart';
 
 class MTooltip extends StatefulWidget {
-  /// [useDefaultPadding] Applies Default Padding [left: 4.0, right: 4.0, top: 8.0, bottom: 8.0]
+
   final bool useDefaultPadding;
 
   final TooltipAlign tooltipAlign;

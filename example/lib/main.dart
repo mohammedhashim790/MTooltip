@@ -45,6 +45,7 @@ class _TooltipExampleState extends State<TooltipExample> {
         child: IntrinsicHeight(
           child: Column(
             children: [
+              // CarouselView(itemExtent: itemExtent, children: children),
               TextButton(
                 onPressed: () {
                   // buttonCarouselController.nextPage();
@@ -56,10 +57,14 @@ class _TooltipExampleState extends State<TooltipExample> {
                 alignment: Alignment.center,
                 child: MTooltip(
                   context: context,
-                  backgroundColor: Colors.redAccent,
-                  tooltipContent: Text("This is a text 12313"),
-                  tooltipAlign: TooltipAlign.bottom,
-                  child: const Text("This is a text 123"),
+                  backgroundColor: Colors.greenAccent,
+                  tooltipContent: Text("Thiiasdasd3"),
+                  tooltipAlign: TooltipAlign.top,
+                  useDefaultPadding: true,
+                  waitDuration: Duration(seconds: 1),
+                  fadeInDuration: Duration(seconds: 2),
+                  showDuration: Duration(seconds: 25),
+                  child: const Text("This is a text 213213"),
                   mTooltipController: mTooltipController,
                 ),
               ),

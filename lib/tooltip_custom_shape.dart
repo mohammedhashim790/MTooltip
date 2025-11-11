@@ -39,6 +39,7 @@ class ToolTipCustomShape extends ShapeBorder {
         ..relativeLineTo(-10, -10)
         ..close();
     } else {
+
       path
         ..moveTo(rect.bottomCenter.dx - 10, rect.bottomCenter.dy)
         ..relativeLineTo(10, 10)

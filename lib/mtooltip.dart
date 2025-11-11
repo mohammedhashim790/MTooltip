@@ -7,26 +7,27 @@ import 'package:mtooltip/mtooltip_position_delegate.dart';
 import 'tooltip_custom_shape.dart';
 
 class MTooltip extends StatefulWidget {
-  bool usePadding;
+  /// [useDefaultPadding] Applies Default Padding [left: 4.0, right: 4.0, top: 8.0, bottom: 8.0]
+  final bool useDefaultPadding;
 
-  TooltipAlign tooltipAlign;
+  final TooltipAlign tooltipAlign;
 
-  Widget child;
+  final Widget child;
 
-  BuildContext context;
+  final BuildContext context;
 
-  Color barrierColor;
+  final Color barrierColor;
 
-  Color backgroundColor;
+  final Color backgroundColor;
 
-  bool barrierDismissible;
+  final bool barrierDismissible;
 
-  Widget tooltipContent;
+  final Widget tooltipContent;
 
-  late Duration hoverShowDuration;
+  late Duration showDuration;
   late Duration waitDuration;
 
-  MTooltipController _mTooltipController;
+  final MTooltipController _mTooltipController;
 
   Duration fadeInDuration;
   Duration fadeOutDuration;
@@ -38,19 +39,19 @@ class MTooltip extends StatefulWidget {
     required this.tooltipContent,
     this.backgroundColor = Colors.black54,
     required MTooltipController mTooltipController,
-    Duration? hoverShowDuration,
+    Duration? showDuration,
     Duration? waitDuration,
     Duration? fadeInDuration,
     Duration? fadeOutDuration,
     this.barrierColor = const Color(0x80000000),
     this.barrierDismissible = true,
-    this.usePadding = true,
+    this.useDefaultPadding = true,
     this.tooltipAlign = TooltipAlign.bottom,
   }) : _mTooltipController = mTooltipController,
        waitDuration = waitDuration ?? Duration(seconds: 0),
        fadeInDuration = fadeInDuration ?? Duration(seconds: 1),
        fadeOutDuration = fadeOutDuration ?? Duration(seconds: 1),
-       hoverShowDuration = hoverShowDuration ?? Duration(seconds: 10);
+       showDuration = showDuration ?? Duration(seconds: 10);
 
   @override
   State<MTooltip> createState() => MTooltipState(_mTooltipController);
@@ -82,7 +83,7 @@ class MTooltipState extends State<MTooltip>
     // _mouseIsConnected = RendererBinding.instance.mouseTracker.mouseIsConnected;
     _controller = AnimationController(
       duration: widget.fadeInDuration,
-      reverseDuration: widget.fadeInDuration,
+      reverseDuration: widget.fadeOutDuration,
       vsync: this,
     );
 
@@ -98,9 +99,12 @@ class MTooltipState extends State<MTooltip>
 
   @override
   void didUpdateWidget(covariant MTooltip oldWidget) {
+    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     // Rebuild Widget on changes requested
-    _newEntry();
+    if (_entry != null) {
+      _concealTooltip(immediately: true).then((_) => _newEntry());
+    }
   }
 
   @override
@@ -138,7 +142,7 @@ class MTooltipState extends State<MTooltip>
         delegate: MTooltipPositionDelegate(
           target: target,
           verticalOffset: (widget.tooltipAlign == TooltipAlign.bottom)
-              ? 80.0
+              ? 0.0
               : 60.0,
           preferBelow: widget.tooltipAlign == TooltipAlign.bottom,
         ),
@@ -170,16 +174,26 @@ class MTooltipState extends State<MTooltip>
               color: widget.backgroundColor,
               shape: ToolTipCustomShape(tooltipAlign: widget.tooltipAlign),
             ),
-            child: widget.tooltipContent,
+            child: Padding(
+              padding: widget.useDefaultPadding
+                  ? const EdgeInsets.only(
+                      left: 4.0,
+                      right: 4.0,
+                      top: 8.0,
+                      bottom: 8.0,
+                    )
+                  : const EdgeInsets.all(0.0),
+              child: widget.tooltipContent,
+            ),
           ),
         ),
       ),
     );
   }
 
-  void _concealTooltip() {
+  Future<void> _concealTooltip({bool immediately = false}) {
     if (_isConcealed) {
-      return;
+      return Future.value();
     }
     _isConcealed = true;
 
@@ -188,7 +202,12 @@ class MTooltipState extends State<MTooltip>
     _showTimer?.cancel();
     _showTimer = null;
 
-    _controller.reverse().then((_) {
+    if (immediately) {
+      _entry!.remove();
+      return Future.value();
+    }
+
+    return _controller.reverse().then((_) {
       if (_entry != null) {
         _entry!.remove();
       }
@@ -208,8 +227,8 @@ class MTooltipState extends State<MTooltip>
     _controller.forward();
     _isConcealed = false;
 
-    if (widget.hoverShowDuration.inSeconds != 0) {
-      _dismissTimer ??= Timer(widget.hoverShowDuration, _concealTooltip);
+    if (widget.showDuration.inSeconds != 0) {
+      _dismissTimer ??= Timer(widget.showDuration, _concealTooltip);
     }
     return true;
   }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../mtooltip.dart';
-import '../constants/tooltip_align.dart';
 import 'mtooltip_position_delegate.dart';
 
 /// A lightweight tooltip widget that displays [tooltipContent] in an [Overlay]
@@ -43,10 +42,10 @@ class MTooltip extends StatefulWidget {
   final Widget tooltipContent;
 
   /// How long the tooltip remains visible after being shown (0 = persist until removed).
-  late Duration showDuration;
+  final Duration showDuration;
 
   /// Delay before showing the tooltip when `show()` is called (debounce).
-  late Duration waitDuration;
+  final Duration waitDuration;
 
   /// Controller used to interact with this instance (show/remove).
   final MTooltipController _mTooltipController;
@@ -86,7 +85,7 @@ class MTooltip extends StatefulWidget {
        showDuration = showDuration ?? Duration(seconds: 10);
 
   @override
-  State<MTooltip> createState() => MTooltipState(_mTooltipController);
+  State<MTooltip> createState() => MTooltipState();
 }
 
 /// State implementation for [MTooltip]. Manages overlay entry creation,
@@ -101,18 +100,14 @@ class MTooltipState extends State<MTooltip>
   Timer? _dismissTimer;
   Timer? _showTimer;
 
-  late bool _mouseIsConnected;
   late bool _isConcealed;
-  late bool _forceRemoval;
   late bool _visible;
 
   /// Controller instance attached to this state for external control.
-  MTooltipController mTooltipController;
+  late MTooltipController mTooltipController;
 
   /// Cached overlay state used to insert the tooltip entry.
   OverlayState? overlayState;
-
-  MTooltipState(this.mTooltipController);
 
   @override
   void initState() {
@@ -124,6 +119,7 @@ class MTooltipState extends State<MTooltip>
       reverseDuration: widget.fadeOutDuration,
       vsync: this,
     );
+    mTooltipController = widget._mTooltipController;
 
     // Attach this state to the external controller so UI callers can trigger
     // show/remove.
@@ -165,13 +161,13 @@ class MTooltipState extends State<MTooltip>
   /// and wraps the tooltip content in a [CustomSingleChildLayout] that uses
   /// [MTooltipPositionDelegate] to position the overlay.
   _newEntry() {
-    final translation = widget.context
-        .findRenderObject()
-        ?.getTransformTo(null)
-        .getTranslation();
-    final mediaQuery = MediaQuery.of(context).size;
-
-    RenderBox parentBox = widget.context.findRenderObject() as RenderBox;
+    // final translation = widget.context
+    //     .findRenderObject()
+    //     ?.getTransformTo(null)
+    //     .getTranslation();
+    // final mediaQuery = MediaQuery.of(context).size;
+    //
+    // RenderBox parentBox = widget.context.findRenderObject() as RenderBox;
 
     overlayState = Overlay.of(context, debugRequiredFor: widget);
 

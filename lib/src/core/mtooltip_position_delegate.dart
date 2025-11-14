@@ -8,9 +8,7 @@ class MTooltipPositionDelegate extends SingleChildLayoutDelegate {
     required this.target,
     required this.verticalOffset,
     required this.preferBelow,
-  }) : assert(target != null),
-       assert(verticalOffset != null),
-       assert(preferBelow != null);
+  });
 
   /// The offset of the target the tooltip is positioned near in the global
   /// coordinate system.

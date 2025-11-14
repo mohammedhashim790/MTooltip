@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Exposed package entry points via [lib/mtooltip.dart](lib/mtooltip.dart).
 
-### Deprecated
+### Deprecateds
 - `MTooltipCard` marked as deprecated (kept for backward compatibility). See: [lib/src/core/mtooltip_card.dart](lib/src/core/mtooltip_card.dart)
 
 ### Notes

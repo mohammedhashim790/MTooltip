@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mtooltip/controller/mtooltip_controller.dart';
 import 'package:mtooltip/mtooltip.dart';
+import 'package:mtooltip/mtooltip_card.dart';
 import 'package:mtooltip/tooltip_align.dart';
 
 void main() {
@@ -46,7 +47,6 @@ class _TooltipExampleState extends State<TooltipExample> {
         child: IntrinsicHeight(
           child: Column(
             children: [
-              // CarouselView(itemExtent: itemExtent, children: children),
               TextButton(
                 onPressed: () {
                   // buttonCarouselController.nextPage();

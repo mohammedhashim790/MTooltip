@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
 
+/// A compact, tappable card widget intended to be used as rich content inside
+/// an [MTooltip].
+///
+/// The card displays a title on the left and a navigation icon with a simple
+/// pagination indicator on the right. Tapping the icon invokes [onTap] with
+/// the provided [index].
+///
 class MTooltipCard extends StatelessWidget {
+  /// The main text shown on the left side of the card.
   final String title;
+
+  /// Color applied to the [title] text.
   final Color titleColor;
+
+  /// Maximum number of pages available (used for the pagination indicator).
   final int paginationLimit;
+
+  /// The current page number shown in the pagination indicator.
   final int pagination;
+
+  /// The index passed to [onTap] when the action icon is pressed.
   final int index;
+
+  /// Callback invoked when the action icon is tapped. Receives [index].
   final Function(int) onTap;
 
+  /// Creates an [MTooltipCard].
+  ///
+  /// All parameters are required to ensure predictable rendering and behavior.
   const MTooltipCard({
     super.key,
     required this.title,
@@ -20,7 +41,9 @@ class MTooltipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Using Scaffold to avoid ancestor material missing
+    // The outer padding provides breathing room inside a tooltip overlay.
+    // Width is constrained to 80% of the screen to avoid overflow in narrow
+    // containers or when displayed as an overlay.
     return Padding(
       padding: const EdgeInsets.only(
         left: 8.0,
@@ -35,6 +58,7 @@ class MTooltipCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Title area: expands to take most of the horizontal space.
               Expanded(
                 flex: 8,
                 child: Text(
@@ -46,12 +70,15 @@ class MTooltipCard extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // Action column: navigation icon (tap target) + pagination text.
               Expanded(
                 flex: 1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    // Navigation icon (tap target). Calls onTap(index).
                     Expanded(
                       flex: 1,
                       child: Align(
@@ -68,6 +95,8 @@ class MTooltipCard extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    // Pagination indicator (e.g. "1/3").
                     Expanded(
                       flex: 1,
                       child: Align(

@@ -3,35 +3,68 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mtooltip/controller/mtooltip_controller.dart';
 import 'package:mtooltip/mtooltip_position_delegate.dart';
+import 'package:mtooltip/tooltip_align.dart';
 
-import 'tooltip_custom_shape.dart';
+import 'tooltip_apex.dart';
 
+/// A lightweight tooltip widget that displays [tooltipContent] in an [Overlay]
+/// positioned relative to the [child] widget's [BuildContext].
+///
+/// Use an [MTooltipController] (passed as `mTooltipController`) to show or hide
+/// the tooltip programmatically. Alignment (top/bottom), visual appearance and
+/// timing are configurable via constructor parameters.
 class MTooltip extends StatefulWidget {
-  /// [useDefaultPadding] Applies Default Padding [left: 4.0, right: 4.0, top: 8.0, bottom: 8.0]
+  /// Applies default padding inside the tooltip content when true:
+  /// left: 4.0, right: 4.0, top: 8.0, bottom: 8.0.
   final bool useDefaultPadding;
 
+  /// Preferred alignment of the tooltip relative to the target (top or bottom).
   final TooltipAlign tooltipAlign;
 
+  /// The widget that the tooltip is attached to. This widget is returned from
+  /// build() and remains in the widget tree while the tooltip may be shown.
   final Widget child;
 
+  /// The [BuildContext] of the target used to compute overlay positioning.
+  ///
+  /// Note: this must refer to a context whose render object is available when
+  /// showing the tooltip.
   final BuildContext context;
 
+  /// Color of the modal barrier displayed behind the tooltip overlay.
   final Color barrierColor;
 
+  /// Background color of the tooltip content container.
   final Color backgroundColor;
 
+  /// Whether tapping the barrier dismisses the tooltip.
   final bool barrierDismissible;
 
+  /// Arbitrary widget used as the tooltip's content (card, text, images, etc).
   final Widget tooltipContent;
 
+  /// How long the tooltip remains visible after being shown (0 = persist until removed).
   late Duration showDuration;
+
+  /// Delay before showing the tooltip when `show()` is called (debounce).
   late Duration waitDuration;
 
+  /// Controller used to interact with this instance (show/remove).
   final MTooltipController _mTooltipController;
 
-  Duration fadeInDuration;
-  Duration fadeOutDuration;
+  /// Duration used for the fade-in animation.
+  final Duration fadeInDuration;
 
+  /// Duration used for the fade-out animation.
+  final Duration fadeOutDuration;
+
+  /// Create an [MTooltip].
+  ///
+  /// - `mTooltipController` is required and will be attached to this state so
+  ///   your UI code can call `show()` / `remove()` programmatically.
+  /// - If `showDuration` is zero seconds the tooltip will not auto-dismiss.
+  /// - `tooltipAlign` controls whether the tooltip prefers to appear above or
+  ///   below the target.
   MTooltip({
     super.key,
     required this.child,
@@ -57,6 +90,11 @@ class MTooltip extends StatefulWidget {
   State<MTooltip> createState() => MTooltipState(_mTooltipController);
 }
 
+/// State implementation for [MTooltip]. Manages overlay entry creation,
+/// animations, timers and controller attachment.
+///
+/// The state exposes methods used by [MTooltipController] to show / dismiss the
+/// tooltip and handles lifecycle events to keep overlay state consistent.
 class MTooltipState extends State<MTooltip>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
@@ -69,8 +107,10 @@ class MTooltipState extends State<MTooltip>
   late bool _forceRemoval;
   late bool _visible;
 
+  /// Controller instance attached to this state for external control.
   MTooltipController mTooltipController;
 
+  /// Cached overlay state used to insert the tooltip entry.
   OverlayState? overlayState;
 
   MTooltipState(this.mTooltipController);
@@ -79,29 +119,31 @@ class MTooltipState extends State<MTooltip>
   void initState() {
     super.initState();
     _isConcealed = false;
-    // _forceRemoval = false;
-    // _mouseIsConnected = RendererBinding.instance.mouseTracker.mouseIsConnected;
+    // Animation controller used for fade transitions.
     _controller = AnimationController(
       duration: widget.fadeInDuration,
       reverseDuration: widget.fadeOutDuration,
       vsync: this,
     );
 
+    // Attach this state to the external controller so UI callers can trigger
+    // show/remove.
     mTooltipController.attach(this);
   }
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+    // Determine whether tooltips are globally visible in this context (uses
+    // TooltipVisibility from the widget tree).
     _visible = TooltipVisibility.of(context);
   }
 
   @override
   void didUpdateWidget(covariant MTooltip oldWidget) {
-    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    // Rebuild Widget on changes requested
+    // If a tooltip is currently shown and the widget updates, remove the
+    // existing entry and create a fresh one that reflects the updated params.
     if (_entry != null) {
       _concealTooltip(immediately: true).then((_) => _newEntry());
     }
@@ -114,9 +156,15 @@ class MTooltipState extends State<MTooltip>
 
   @override
   Widget build(BuildContext context) {
+    // Return the child unchanged; tooltip is rendered via an OverlayEntry.
     return IndexedSemantics(index: 99, child: widget.child);
   }
 
+  /// Build a new [OverlayEntry] for the tooltip and assign to [_entry].
+  ///
+  /// The method computes the target position using the provided `widget.context`
+  /// and wraps the tooltip content in a [CustomSingleChildLayout] that uses
+  /// [MTooltipPositionDelegate] to position the overlay.
   _newEntry() {
     final translation = widget.context
         .findRenderObject()
@@ -146,7 +194,7 @@ class MTooltipState extends State<MTooltip>
               : 60.0,
           preferBelow: widget.tooltipAlign == TooltipAlign.bottom,
         ),
-        child: tooltipWidget,
+        child: IntrinsicWidth(child: IntrinsicHeight(child: tooltipWidget)),
       ),
     );
 
@@ -162,6 +210,10 @@ class MTooltipState extends State<MTooltip>
     );
   }
 
+  /// Create the widget that is inserted into the overlay for display.
+  ///
+  /// Wraps [widget.tooltipContent] in a shaped container and applies a
+  /// [FadeTransition] controlled by [_controller].
   Widget createWidget() {
     return Material(
       color: Colors.transparent,
@@ -172,7 +224,7 @@ class MTooltipState extends State<MTooltip>
           child: Container(
             decoration: ShapeDecoration(
               color: widget.backgroundColor,
-              shape: ToolTipCustomShape(tooltipAlign: widget.tooltipAlign),
+              shape: TooltipApex(tooltipAlign: widget.tooltipAlign),
             ),
             child: Padding(
               padding: widget.useDefaultPadding
@@ -191,6 +243,11 @@ class MTooltipState extends State<MTooltip>
     );
   }
 
+  /// Conceal the tooltip.
+  ///
+  /// If [immediately] is true the overlay entry is removed without running the
+  /// fade-out animation. Otherwise the animation controller is reversed and
+  /// the entry removed when the reverse completes.
   Future<void> _concealTooltip({bool immediately = false}) {
     if (_isConcealed) {
       return Future.value();
@@ -214,6 +271,11 @@ class MTooltipState extends State<MTooltip>
     });
   }
 
+  /// Insert the overlay entry and start the fade-in animation.
+  ///
+  /// Returns true if the tooltip was shown. The tooltip will not be shown if
+  /// [TooltipVisibility.of] in this context is false or this state is not
+  /// mounted.
   bool _showTooltip() {
     if (!_visible || !mounted) {
       return false;
@@ -233,19 +295,15 @@ class MTooltipState extends State<MTooltip>
     return true;
   }
 
+  /// Forcefully remove timers and overlay entry without animation.
   void dismiss() {
-    // MTooltip._openedTooltips.remove(this);
-    _dismissTimer?.cancel();
-    _dismissTimer = null;
-    _showTimer?.cancel();
-    _showTimer = null;
-    if (!_isConcealed) {
-      _entry?.remove();
-    }
-    _isConcealed = false;
-    _entry = null;
+    _concealTooltip();
   }
 
+  /// Public API used by the attached [MTooltipController] to show the tooltip.
+  ///
+  /// If [immediately] is true the tooltip is shown right away; otherwise the
+  /// widget waits for `widget.waitDuration` before showing (debounced).
   void show({bool immediately = false}) {
     _dismissTimer?.cancel();
     _dismissTimer = null;

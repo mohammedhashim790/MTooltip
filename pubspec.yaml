@@ -1,7 +1,7 @@
 name: mtooltip
 description: "A customizable tooltip implementation for Flutter applications that provides enhanced control over tooltip appearance and behavior."
 version: 0.0.1
-homepage:
+homepage: https://github.com/bensonarafat/super_tooltip
 
 environment:
   sdk: ^3.9.2

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mtooltip/mtooltip_card.dart';
+import 'package:mtooltip/mtooltip.dart';
 
 void main() {
   testWidgets('Render Test', (WidgetTester tester) async {

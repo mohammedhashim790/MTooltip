@@ -16,14 +16,13 @@ Quick links
 - Accepts any widget as tooltip content (cards, texts, images, etc.)
 - Fade-in/out animation and configurable timings
 - Example app included: [example/lib/main.dart](example/lib/main.dart)
-- Unit tests: [test/mtooltip_test.dart](test/mtooltip_test.dart)
 
 Installation
 Add this package to your project's pubspec.yaml:
 ```yaml
 dependencies:
   mtooltip:
-    path: ../   # or `mtooltip: ^0.0.1` if published
+    path: ../   
 ```
 
 ## Requirements
@@ -60,13 +59,18 @@ MTooltip(
   mTooltipController: controller,
   tooltipAlign: TooltipAlign.top,
   backgroundColor: Colors.black87,
-  tooltipContent: MTooltipCard(
-    title: 'Welcome!',
-    titleColor: Colors.white,
-    paginationLimit: 3,
-    pagination: 1,
-    index: 0,
-    onTap: (i) { /* handle */ },
+  tooltipContent: Container(
+    child: Column(
+        children: [
+            Text("This is a Tooltip"),
+            IconButton(
+                onPressed: () {
+                    mc1.remove();
+                    mc2.show();
+            },
+            icon: Icon(Icons.navigate_next),
+        ),
+    ]),
   ),
   child: const Text('Tap to show tooltip'),
 );

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 enum TooltipAlign { top, bottom }
 
-class ToolTipCustomShape extends ShapeBorder {
+class TooltipApex extends ShapeBorder {
   final bool usePadding;
 
   final TooltipAlign tooltipAlign;
 
-  const ToolTipCustomShape({
+  const TooltipApex({
     this.usePadding = true,
     this.tooltipAlign = TooltipAlign.bottom,
   });
@@ -39,7 +39,6 @@ class ToolTipCustomShape extends ShapeBorder {
         ..relativeLineTo(-10, -10)
         ..close();
     } else {
-
       path
         ..moveTo(rect.bottomCenter.dx - 10, rect.bottomCenter.dy)
         ..relativeLineTo(10, 10)

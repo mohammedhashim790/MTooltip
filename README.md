@@ -1,92 +1,94 @@
-# Custom Flutter Tooltip
 
-A highly customizable tooltip implementation for Flutter applications that provides enhanced control over tooltip
-appearance and behavior. Unlike Flutter's default tooltip, this package allows complete customization of the tooltip's
-shape, position, and content.
+# mtooltip
+
+A lightweight, highly-customizable tooltip widget for Flutter with support for top/bottom positioning, controllers, and rich content.
+
+Quick links
+- Widget: [`MTooltip`](lib/mtooltip.dart) — [lib/mtooltip.dart](lib/mtooltip.dart)
+- Card helper: [`MTooltipCard`](lib/mtooltip_card.dart) — [lib/mtooltip_card.dart](lib/mtooltip_card.dart)
+- Shape & alignment: [`ToolTipCustomShape`](lib/tooltip_apex.dart), [`TooltipAlign`](lib/tooltip_apex.dart) — [lib/tooltip_custom_shape.dart](lib/tooltip_apex.dart)
+- Positioning delegate: [`MTooltipPositionDelegate`](lib/mtooltip_position_delegate.dart) — [lib/mtooltip_position_delegate.dart](lib/mtooltip_position_delegate.dart)
+- Controller API: [`MTooltipController`](lib/controller/mtooltip_controller.dart), impl [`IMTooltipController`](lib/controller/mtooltip_controller_impl.dart) — [lib/controller/mtooltip_controller.dart](lib/controller/mtooltip_controller.dart)
 
 ## Features
+- Custom shape with arrow indicator (top / bottom)
+- Attach a controller to programmatically show / remove tooltips
+- Accepts any widget as tooltip content (cards, texts, images, etc.)
+- Fade-in/out animation and configurable timings
+- Example app included: [example/lib/main.dart](example/lib/main.dart)
+- Unit tests: [test/mtooltip_test.dart](test/mtooltip_test.dart)
 
-- Fully customizable tooltip design
-- Custom tooltip shapes with arrow indicators
-- Support for both top and bottom tooltip positioning
-- Customizable background and barrier colors
-- Smooth fade in/out animations
-- Multiple tooltip management system
-- Built-in pagination support for tooltip content
-- Responsive design support
-
-## Installation
-
-Add this dependency to your `pubspec.yaml` file:
-
+Installation
+Add this package to your project's pubspec.yaml:
+```yaml
+dependencies:
+  mtooltip:
+    path: ../   # or `mtooltip: ^0.0.1` if published
 ```
-yaml dependencies: mtooltip: ^0.0.1 responsive_sizer: ^3.1.1
-``` 
 
 ## Requirements
-
-- Dart SDK: >=2.18.0 <3.0.0
+- Dart SDK: ^3.9.2 (see package pubspec) — [pubspec.yaml](pubspec.yaml)
 - Flutter: >=1.17.0
-- responsive_sizer: ^3.1.1
 
-## Usage
+## Basic usage
+```dart
+final controller = MTooltipController();
 
-### Basic Tooltip
-
+MTooltip(
+  context: context,
+  child: Icon(Icons.info),
+  tooltipContent: const Text('Simple tooltip content'),
+  backgroundColor: Colors.blue,
+  mTooltipController: controller,
+);
 ```
-MTooltip( context: context, tooltipContent: Text('Simple tooltip content'), backgroundColor: Colors.blue, child: Icon(Icons.info), );
-latex_unknown_tag
-``` 
 
-### Advanced Tooltip with Custom Card
-
+## Programmatic control
+Use the controller to show or remove the tooltip:
+```dart
+controller.show();
+controller.remove();
 ```
-MTooltip( context: context, tooltipContent: MTooltipCard( title: 'Welcome to the app!', titleColor: Colors.white, paginationLimit: 3, pagination: 1, index: 0, onTap: (index) { // Handle pagination }, ), backgroundColor: Colors.black87, tooltipAlign: TooltipAlign.TOP, barrierDismissible: true, );
-latex_unknown_tag
-``` 
+Controller API: [`MTooltipController.show`](lib/controller/mtooltip_controller.dart) and [`MTooltipController.remove`](lib/controller/mtooltip_controller.dart).
 
-### Tooltip Positioning
+## Advanced usage (custom card)
+```dart
+final controller = MTooltipController();
 
+MTooltip(
+  context: context,
+  mTooltipController: controller,
+  tooltipAlign: TooltipAlign.top,
+  backgroundColor: Colors.black87,
+  tooltipContent: MTooltipCard(
+    title: 'Welcome!',
+    titleColor: Colors.white,
+    paginationLimit: 3,
+    pagination: 1,
+    index: 0,
+    onTap: (i) { /* handle */ },
+  ),
+  child: const Text('Tap to show tooltip'),
+);
 ```
-// Bottom aligned tooltip 
-MTooltip( tooltipAlign: TooltipAlign.BOTTOM,...);
-// Top aligned tooltip 
-MTooltip( tooltipAlign: TooltipAlign.TOP, ...);
-``` 
+See [`MTooltipCard`](lib/mtooltip_card.dart) for the card structure.
 
-### Available Properties
+## API notes
+- The main widget is [`MTooltip`](lib/mtooltip.dart).
+- Alignment choices are provided by [`TooltipAlign`](lib/tooltip_apex.dart).
+- Positioning is computed by [`MTooltipPositionDelegate`](lib/mtooltip_position_delegate.dart).
+- Attach a controller using the `mTooltipController` constructor parameter; the controller factory is [`MTooltipController()`](lib/controller/mtooltip_controller.dart).
 
-- `context` (required): The build context
-- `child` (required): The widget that triggers the tooltip
-- `tooltipContent` (required): The content to be displayed in the tooltip
-- `backgroundColor` (required): Background color of the tooltip
-- `barrierColor` (optional): Color of the modal barrier (default: 80% black)
-- `barrierDismissible` (optional): Whether clicking outside dismisses the tooltip (default: true)
-- `usePadding` (optional): Enable/disable padding (default: true)
-- `tooltipAlign` (optional): Alignment of the tooltip (TOP or BOTTOM, default: BOTTOM)
-
-## Testing
-
-To run the tests:
-
-```
+## Example and testing
+- Run the example app in `example/` — see [example/lib/main.dart](example/lib/main.dart).
+- Run unit tests:
+```sh
 flutter test
-``` 
+```
+Tests live at [test/mtooltip_test.dart](test/mtooltip_test.dart).
 
 ## Contributing
-
-We welcome contributions to improve this tooltip package! Here's how you can help:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Please make sure to update tests as appropriate and follow the existing coding style.
+Contributions are welcome. Please follow standard fork/branch/PR workflow and update or add tests where appropriate.
 
 ## License
-
-```
-MIT License
-Copyright (c) 2021
+This project is MIT-licensed — see [LICENSE](LICENSE).

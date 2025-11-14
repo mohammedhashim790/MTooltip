@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mtooltip/controller/mtooltip_controller.dart';
 import 'package:mtooltip/mtooltip.dart';
-import 'package:mtooltip/tooltip_custom_shape.dart';
+import 'package:mtooltip/tooltip_align.dart';
 
 void main() {
   runApp(const MyTooltipApp());
@@ -32,7 +32,8 @@ class TooltipExample extends StatefulWidget {
 }
 
 class _TooltipExampleState extends State<TooltipExample> {
-  MTooltipController mTooltipController = MTooltipController();
+  MTooltipController mc1 = MTooltipController();
+  MTooltipController mc2 = MTooltipController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class _TooltipExampleState extends State<TooltipExample> {
               TextButton(
                 onPressed: () {
                   // buttonCarouselController.nextPage();
-                  mTooltipController.show();
+                  mc1.show();
                 },
                 child: const Text("Click to Show Bottom"),
               ),
@@ -57,15 +58,59 @@ class _TooltipExampleState extends State<TooltipExample> {
                 alignment: Alignment.center,
                 child: MTooltip(
                   context: context,
-                  backgroundColor: Colors.greenAccent,
-                  tooltipContent: Text("Thiiasdasd3"),
+                  backgroundColor: Colors.blue,
+                  tooltipContent: Container(
+                    child: Column(
+                      children: [
+                        Text("This is a Tooltip"),
+                        IconButton(
+                          onPressed: () {
+                            mc1.remove();
+                            mc2.show();
+                          },
+                          icon: Icon(Icons.navigate_next),
+                        ),
+                      ],
+                    ),
+                  ),
                   tooltipAlign: TooltipAlign.top,
                   useDefaultPadding: true,
                   waitDuration: Duration(seconds: 1),
                   fadeInDuration: Duration(seconds: 2),
-                  showDuration: Duration(seconds: 25),
-                  child: const Text("This is a text 213213"),
-                  mTooltipController: mTooltipController,
+                  showDuration: Duration(seconds: 4),
+                  mTooltipController: mc1,
+                  child: const Text("Explain this sentence"),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: MTooltip(
+                  context: context,
+                  backgroundColor: Colors.black,
+                  tooltipContent: Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          "This is a Tooltip",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            mc2.remove();
+                            mc1.show();
+                          },
+                          icon: Icon(Icons.navigate_next),
+                        ),
+                      ],
+                    ),
+                  ),
+                  tooltipAlign: TooltipAlign.bottom,
+                  useDefaultPadding: true,
+                  waitDuration: Duration(seconds: 1),
+                  fadeInDuration: Duration(seconds: 2),
+                  showDuration: Duration(seconds: 4),
+                  mTooltipController: mc2,
+                  child: const Text("Navigate Next"),
                 ),
               ),
             ],

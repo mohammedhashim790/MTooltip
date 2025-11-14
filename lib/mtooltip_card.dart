@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 /// pagination indicator on the right. Tapping the icon invokes [onTap] with
 /// the provided [index].
 ///
+@Deprecated("Not Supported anymore.")
 class MTooltipCard extends StatelessWidget {
   /// The main text shown on the left side of the card.
   final String title;

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mtooltip/controller/mtooltip_controller.dart';
 import 'package:mtooltip/mtooltip.dart';
-import 'package:mtooltip/tooltip_align.dart';
 
 void main() {
   runApp(const MyTooltipApp());

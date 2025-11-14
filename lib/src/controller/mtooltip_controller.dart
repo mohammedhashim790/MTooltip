@@ -1,5 +1,5 @@
-import 'package:mtooltip/controller/mtooltip_controller_impl.dart';
-import 'package:mtooltip/mtooltip.dart';
+import '../controller/mtooltip_controller_impl.dart';
+import '../core/mtooltip.dart';
 
 /// Controller interface for driving an [MTooltip] instance.
 ///

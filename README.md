@@ -4,11 +4,11 @@
 A lightweight, highly-customizable tooltip widget for Flutter with support for top/bottom positioning, controllers, and rich content.
 
 Quick links
-- Widget: [`MTooltip`](lib/mtooltip.dart) — [lib/mtooltip.dart](lib/mtooltip.dart)
-- Card helper: [`MTooltipCard`](lib/mtooltip_card.dart) — [lib/mtooltip_card.dart](lib/mtooltip_card.dart)
-- Shape & alignment: [`ToolTipCustomShape`](lib/tooltip_apex.dart), [`TooltipAlign`](lib/tooltip_apex.dart) — [lib/tooltip_custom_shape.dart](lib/tooltip_apex.dart)
-- Positioning delegate: [`MTooltipPositionDelegate`](lib/mtooltip_position_delegate.dart) — [lib/mtooltip_position_delegate.dart](lib/mtooltip_position_delegate.dart)
-- Controller API: [`MTooltipController`](lib/controller/mtooltip_controller.dart), impl [`IMTooltipController`](lib/controller/mtooltip_controller_impl.dart) — [lib/controller/mtooltip_controller.dart](lib/controller/mtooltip_controller.dart)
+- Widget: [`MTooltip`](lib/src/core/mtooltip.dart) — [lib/mtooltip.dart](lib/src/core/mtooltip.dart)
+- Card helper: [`MTooltipCard`](lib/src/core/mtooltip_card.dart) — [lib/mtooltip_card.dart](lib/src/core/mtooltip_card.dart)
+- Shape & alignment: [`ToolTipCustomShape`](lib/src/core/tooltip_apex.dart), [`TooltipAlign`](lib/src/core/tooltip_apex.dart) — [lib/tooltip_custom_shape.dart](lib/src/core/tooltip_apex.dart)
+- Positioning delegate: [`MTooltipPositionDelegate`](lib/src/core/mtooltip_position_delegate.dart) — [lib/mtooltip_position_delegate.dart](lib/src/core/mtooltip_position_delegate.dart)
+- Controller API: [`MTooltipController`](lib/src/controller/mtooltip_controller.dart), impl [`IMTooltipController`](lib/src/controller/mtooltip_controller_impl.dart) — [lib/controller/mtooltip_controller.dart](lib/src/controller/mtooltip_controller.dart)
 
 ## Features
 - Custom shape with arrow indicator (top / bottom)
@@ -48,7 +48,7 @@ Use the controller to show or remove the tooltip:
 controller.show();
 controller.remove();
 ```
-Controller API: [`MTooltipController.show`](lib/controller/mtooltip_controller.dart) and [`MTooltipController.remove`](lib/controller/mtooltip_controller.dart).
+Controller API: [`MTooltipController.show`](lib/src/controller/mtooltip_controller.dart) and [`MTooltipController.remove`](lib/src/controller/mtooltip_controller.dart).
 
 ## Advanced usage (custom card)
 ```dart
@@ -75,13 +75,13 @@ MTooltip(
   child: const Text('Tap to show tooltip'),
 );
 ```
-See [`MTooltipCard`](lib/mtooltip_card.dart) for the card structure.
+See [`MTooltipCard`](lib/src/core/mtooltip_card.dart) for the card structure.
 
 ## API notes
-- The main widget is [`MTooltip`](lib/mtooltip.dart).
-- Alignment choices are provided by [`TooltipAlign`](lib/tooltip_apex.dart).
-- Positioning is computed by [`MTooltipPositionDelegate`](lib/mtooltip_position_delegate.dart).
-- Attach a controller using the `mTooltipController` constructor parameter; the controller factory is [`MTooltipController()`](lib/controller/mtooltip_controller.dart).
+- The main widget is [`MTooltip`](lib/src/core/mtooltip.dart).
+- Alignment choices are provided by [`TooltipAlign`](lib/src/core/tooltip_apex.dart).
+- Positioning is computed by [`MTooltipPositionDelegate`](lib/src/core/mtooltip_position_delegate.dart).
+- Attach a controller using the `mTooltipController` constructor parameter; the controller factory is [`MTooltipController()`](lib/src/controller/mtooltip_controller.dart).
 
 ## Example and testing
 - Run the example app in `example/` — see [example/lib/main.dart](example/lib/main.dart).

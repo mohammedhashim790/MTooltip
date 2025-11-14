@@ -1,11 +1,11 @@
 name: mtooltip
-description: "A highly customizable tooltip implementation for Flutter applications that provides enhanced control over tooltip appearance and behavior. Unlike Flutter's default tooltip, this package allows complete customization of the tooltip's shape, position, and content."
+description: "A customizable tooltip implementation for Flutter applications that provides enhanced control over tooltip appearance and behavior."
 version: 0.0.1
 homepage:
 
 environment:
   sdk: ^3.9.2
-  flutter: ">=1.17.0"
+  flutter: ">=2.12.0"
 
 dependencies:
   flutter:

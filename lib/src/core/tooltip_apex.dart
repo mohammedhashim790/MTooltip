@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mtooltip/tooltip_align.dart';
+
+import '../constants/tooltip_align.dart';
 
 /// A shape that paints a rounded rectangle with a triangular "apex" (arrow)
 /// pointing to the target.

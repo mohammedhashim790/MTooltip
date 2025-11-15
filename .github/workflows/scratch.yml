@@ -20,7 +20,7 @@ jobs:
         with:
           channel: stable
           # Uses Flutter version specified in [pubspec.yaml]
-          flutter-version-file: pubspec.yaml
+          flutter-version-file: ./pubspec.yaml
 
       # Get flutter dependencies.
       - run: flutter pub get

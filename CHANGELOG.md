@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## [1.0.2-beta] - 2025-11-14
+
+### Added
+- Homepage URL updated
+- Static Analysis issue from 'pubdev' resolved.
+
+### Notes
+- See [README.md](README.md) for usage, API details and example instructions.
+- Package is MIT licensed — [LICENSE](LICENSE).
+
 ## [1.0.1-beta] - 2025-11-14
 
 ### Added

@@ -160,7 +160,7 @@ class MTooltipState extends State<MTooltip>
   /// The method computes the target position using the provided `widget.context`
   /// and wraps the tooltip content in a [CustomSingleChildLayout] that uses
   /// [MTooltipPositionDelegate] to position the overlay.
-  _newEntry() {
+  void _newEntry() {
     // final translation = widget.context
     //     .findRenderObject()
     //     ?.getTransformTo(null)

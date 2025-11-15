@@ -21,8 +21,7 @@ Installation
 Add this package to your project's pubspec.yaml:
 ```yaml
 dependencies:
-  mtooltip:
-    path: ../   
+  mtooltip:  
 ```
 
 ## Requirements

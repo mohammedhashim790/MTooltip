@@ -56,19 +56,17 @@ class _TooltipExampleState extends State<TooltipExample> {
                 child: MTooltip(
                   context: context,
                   backgroundColor: Colors.blue,
-                  tooltipContent: Container(
-                    child: Column(
-                      children: [
-                        Text("This is a Tooltip"),
-                        IconButton(
-                          onPressed: () {
-                            mc1.remove();
-                            mc2.show();
-                          },
-                          icon: Icon(Icons.navigate_next),
-                        ),
-                      ],
-                    ),
+                  tooltipContent: Column(
+                    children: [
+                      Text("This is a Tooltip"),
+                      IconButton(
+                        onPressed: () {
+                          mc1.remove();
+                          mc2.show();
+                        },
+                        icon: Icon(Icons.navigate_next),
+                      ),
+                    ],
                   ),
                   tooltipAlign: TooltipAlign.top,
                   useDefaultPadding: true,
@@ -84,22 +82,20 @@ class _TooltipExampleState extends State<TooltipExample> {
                 child: MTooltip(
                   context: context,
                   backgroundColor: Colors.black,
-                  tooltipContent: Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          "This is a Tooltip",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            mc2.remove();
-                            mc1.show();
-                          },
-                          icon: Icon(Icons.navigate_next),
-                        ),
-                      ],
-                    ),
+                  tooltipContent: Column(
+                    children: [
+                      Text(
+                        "This is a Tooltip",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          mc2.remove();
+                          mc1.show();
+                        },
+                        icon: Icon(Icons.navigate_next),
+                      ),
+                    ],
                   ),
                   tooltipAlign: TooltipAlign.bottom,
                   useDefaultPadding: true,

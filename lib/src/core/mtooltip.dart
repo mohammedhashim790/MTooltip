@@ -78,11 +78,11 @@ class MTooltip extends StatefulWidget {
     this.barrierDismissible = true,
     this.useDefaultPadding = true,
     this.tooltipAlign = TooltipAlign.bottom,
-  }) : _mTooltipController = mTooltipController,
-       waitDuration = waitDuration ?? Duration(seconds: 0),
-       fadeInDuration = fadeInDuration ?? Duration(seconds: 1),
-       fadeOutDuration = fadeOutDuration ?? Duration(seconds: 1),
-       showDuration = showDuration ?? Duration(seconds: 10);
+  })  : _mTooltipController = mTooltipController,
+        waitDuration = waitDuration ?? Duration(seconds: 0),
+        fadeInDuration = fadeInDuration ?? Duration(seconds: 1),
+        fadeOutDuration = fadeOutDuration ?? Duration(seconds: 1),
+        showDuration = showDuration ?? Duration(seconds: 10);
 
   @override
   State<MTooltip> createState() => MTooltipState();
@@ -184,9 +184,8 @@ class MTooltipState extends State<MTooltip>
       child: CustomSingleChildLayout(
         delegate: MTooltipPositionDelegate(
           target: target,
-          verticalOffset: (widget.tooltipAlign == TooltipAlign.bottom)
-              ? 0.0
-              : 60.0,
+          verticalOffset:
+              (widget.tooltipAlign == TooltipAlign.bottom) ? 0.0 : 60.0,
           preferBelow: widget.tooltipAlign == TooltipAlign.bottom,
         ),
         child: IntrinsicWidth(child: IntrinsicHeight(child: tooltipWidget)),

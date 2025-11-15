@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.1-beta] - 2025-11-14
+
+### Added
+- Initial public beta release of the package.
+- Updated README.md
+- Unit tests for `MTooltipCard`: [test/mtooltip_test.dart](test/mtooltip_test.dart)
+
+### Notes
+- See [README.md](README.md) for usage, API details and example instructions.
+- Package is MIT licensed — [LICENSE](LICENSE).
+
 ## [1.0.0-beta] - 2025-11-14
 
 ### Added
@@ -16,7 +27,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Exposed package entry points via [lib/mtooltip.dart](lib/mtooltip.dart).
 
-### Deprecateds
+### Deprecated
 - `MTooltipCard` marked as deprecated (kept for backward compatibility). See: [lib/src/core/mtooltip_card.dart](lib/src/core/mtooltip_card.dart)
 
 ### Notes

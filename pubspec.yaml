@@ -1,6 +1,6 @@
 name: mtooltip
 description: "A customizable tooltip implementation for Flutter applications that provides enhanced control over tooltip appearance and behavior."
-version: 1.0.0-beta
+version: 1.0.1-beta
 homepage: https://mohammedhashim.com
 repository: https://github.com/mohammedhashim790/MTooltip
 

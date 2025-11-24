@@ -46,7 +46,6 @@ class _TooltipExampleState extends State<TooltipExample> {
             children: [
               TextButton(
                 onPressed: () {
-                  // buttonCarouselController.nextPage();
                   mc1.show();
                 },
                 child: const Text("Click to Show Bottom"),
@@ -56,7 +55,7 @@ class _TooltipExampleState extends State<TooltipExample> {
                 child: MTooltip(
                   context: context,
                   backgroundColor: Colors.blue,
-                  tooltipContent: Column(
+                  tooltipContent: Row(
                     children: [
                       Text("This is a Tooltip"),
                       IconButton(
@@ -69,7 +68,6 @@ class _TooltipExampleState extends State<TooltipExample> {
                     ],
                   ),
                   tooltipAlign: TooltipAlign.top,
-                  useDefaultPadding: true,
                   waitDuration: Duration(seconds: 1),
                   fadeInDuration: Duration(seconds: 2),
                   showDuration: Duration(seconds: 4),
@@ -82,7 +80,7 @@ class _TooltipExampleState extends State<TooltipExample> {
                 child: MTooltip(
                   context: context,
                   backgroundColor: Colors.black,
-                  tooltipContent: Column(
+                  tooltipContent: Row(
                     children: [
                       Text(
                         "This is a Tooltip",
@@ -98,7 +96,6 @@ class _TooltipExampleState extends State<TooltipExample> {
                     ],
                   ),
                   tooltipAlign: TooltipAlign.bottom,
-                  useDefaultPadding: true,
                   waitDuration: Duration(seconds: 1),
                   fadeInDuration: Duration(seconds: 2),
                   showDuration: Duration(seconds: 4),

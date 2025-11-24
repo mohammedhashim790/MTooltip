@@ -13,8 +13,8 @@ import 'mtooltip_position_delegate.dart';
 /// timing are configurable via constructor parameters.
 class MTooltip extends StatefulWidget {
   /// Applies default padding inside the tooltip content when true:
-  /// left: 4.0, right: 4.0, top: 8.0, bottom: 8.0.
-  final bool useDefaultPadding;
+  /// left: 4.0, right: 4.0, top: 4.0, bottom: 4.0.
+  EdgeInsets? padding;
 
   /// Preferred alignment of the tooltip relative to the target (top or bottom).
   final TooltipAlign tooltipAlign;
@@ -29,8 +29,9 @@ class MTooltip extends StatefulWidget {
   /// showing the tooltip.
   final BuildContext context;
 
-  /// Color of the modal barrier displayed behind the tooltip overlay.
-  final Color barrierColor;
+  /// Shadow for the tooltip
+  /// Default will be set to [Colors.black45], [SpreadRadius=1.0], [BlurRadius=8.0], [BlurStyle.normal]
+  final BoxShadow? shadow;
 
   /// Background color of the tooltip content container.
   final Color backgroundColor;
@@ -69,15 +70,15 @@ class MTooltip extends StatefulWidget {
     required this.context,
     required this.tooltipContent,
     this.backgroundColor = Colors.black54,
+    this.barrierDismissible = true,
+    this.tooltipAlign = TooltipAlign.bottom,
     required MTooltipController mTooltipController,
     Duration? showDuration,
     Duration? waitDuration,
     Duration? fadeInDuration,
     Duration? fadeOutDuration,
-    this.barrierColor = const Color(0x80000000),
-    this.barrierDismissible = true,
-    this.useDefaultPadding = true,
-    this.tooltipAlign = TooltipAlign.bottom,
+    this.shadow,
+    this.padding,
   })  : _mTooltipController = mTooltipController,
         waitDuration = waitDuration ?? Duration(seconds: 0),
         fadeInDuration = fadeInDuration ?? Duration(seconds: 1),
@@ -218,17 +219,24 @@ class MTooltipState extends State<MTooltip>
           child: Container(
             decoration: ShapeDecoration(
               color: widget.backgroundColor,
+              shadows: [
+                widget.shadow ??
+                    BoxShadow(
+                        color: Colors.black45,
+                        spreadRadius: 1.0,
+                        blurRadius: 8.0,
+                        blurStyle: BlurStyle.normal)
+              ],
               shape: TooltipApex(tooltipAlign: widget.tooltipAlign),
             ),
             child: Padding(
-              padding: widget.useDefaultPadding
-                  ? const EdgeInsets.only(
-                      left: 4.0,
-                      right: 4.0,
-                      top: 8.0,
-                      bottom: 8.0,
-                    )
-                  : const EdgeInsets.all(0.0),
+              padding: widget.padding ??
+                  const EdgeInsets.only(
+                    left: 4.0,
+                    right: 4.0,
+                    top: 4.0,
+                    bottom: 4.0,
+                  ),
               child: widget.tooltipContent,
             ),
           ),

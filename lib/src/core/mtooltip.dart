@@ -191,9 +191,11 @@ class MTooltipState extends State<MTooltip>
         selfOffset.dy < 0 ||
         selfOffset.dx + selfBounds.width > viewPort.width ||
         selfOffset.dy + selfBounds.height > viewPort.height) {
-      print('Widget is out of bounds!');
+      // TODO Must adjust apex position Here
+      // print('Widget is out of bounds!');
     } else {
-      print('Widget is within bounds.');
+      // Use the default or parametrised apex positioning.
+      // print('Widget is within bounds.');
     }
 
     var tooltipWidget = createWidget();

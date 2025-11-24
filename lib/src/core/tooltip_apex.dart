@@ -76,16 +76,38 @@ class TooltipApex extends ShapeBorder {
 
     // Draw the triangular apex. Coordinates are relative to the modified rect.
     if (tooltipAlign == TooltipAlign.bottom) {
+      // Apex on the bottom edge pointing downward.
+      Offset offset = rect.topCenter;
+      double x = offset.dx - 20, y = offset.dy;
+      if (apexPosition == ApexPosition.left) {
+        offset = rect.topLeft;
+        // Adjusting the x-axis to prevent positioning to the end.
+        x = offset.dx + 10;
+      } else if (apexPosition == ApexPosition.right) {
+        offset = rect.topRight;
+        x = offset.dx - 30;
+      }
       // Apex on the top edge pointing upward.
       path
-        ..moveTo(rect.topCenter.dx - 20, rect.topCenter.dy)
+        ..moveTo(x, y)
         ..relativeLineTo(20, 0)
         ..relativeLineTo(-10, -10)
         ..close();
     } else {
       // Apex on the bottom edge pointing downward.
+      Offset offset = rect.bottomCenter;
+      double x = offset.dx - 10, y = offset.dy;
+      if (apexPosition == ApexPosition.left) {
+        offset = rect.bottomLeft;
+        // Adjusting the x-axis to prevent positioning to the end.
+        x = offset.dx + 10;
+      } else if (apexPosition == ApexPosition.right) {
+        offset = rect.bottomRight;
+        x = offset.dx - 30;
+      }
+
       path
-        ..moveTo(rect.bottomCenter.dx - 10, rect.bottomCenter.dy)
+        ..moveTo(x, y)
         ..relativeLineTo(10, 10)
         ..relativeLineTo(10, -10)
         ..close();

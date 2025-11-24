@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mtooltip/mtooltip.dart';
 
@@ -46,81 +47,79 @@ class _TooltipExampleState extends State<TooltipExample> {
         child: IntrinsicHeight(
           child: Column(
             children: [
-              Container(
-                decoration: ShapeDecoration(
-                  color: Colors.deepPurple,
-                  shape: TooltipApex(tooltipAlign: TooltipAlign.top, apexPosition: ApexPosition.left),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("asdasd"),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: MTooltip(
+                  context: context,
+                  backgroundColor: Colors.blue,
+                  tooltipContent: Row(
+                    children: [
+                      Text("This is a Tooltip"),
+                      IconButton(
+                        onPressed: () {
+                          mc1.remove();
+                          mc2.show();
+                        },
+                        icon: Icon(Icons.navigate_next),
+                      ),
+                    ],
+                  ),
+                  tooltipAlign: TooltipAlign.top,
+                  showDuration: Duration(seconds: 10),
+                  onRendered: () {
+                    if (kDebugMode) {
+                      print("MC1 Rendered");
+                    }
+                  },
+                  onDismiss: () {
+                    if (kDebugMode) {
+                      print("MC1 Dismiss");
+                    }
+                  },
+                  mTooltipController: mc1,
+                  child: TextButton(
+                    onPressed: () {
+                      mc1.show();
+                    },
+                    child: const Text("Click to Show Tooltip"),
+                  ),
                 ),
               ),
-              // Align(
-              //   alignment: Alignment.bottomRight,
-              //   child: MTooltip(
-              //     context: context,
-              //     backgroundColor: Colors.blue,
-              //     tooltipContent: Row(
-              //       children: [
-              //         Text("This is a Tooltip"),
-              //         IconButton(
-              //           onPressed: () {
-              //             mc1.remove();
-              //             mc2.show();
-              //           },
-              //           icon: Icon(Icons.navigate_next),
-              //         ),
-              //       ],
-              //     ),
-              //     tooltipAlign: TooltipAlign.top,
-              //     showDuration: Duration(seconds: 10),
-              //     onRendered: () {
-              //       print("MC1 Rendered");
-              //     },
-              //     onDismiss: () {
-              //       print("MC1 Dismiss");
-              //     },
-              //     mTooltipController: mc1,
-              //     child: TextButton(
-              //       onPressed: () {
-              //         mc1.show();
-              //       },
-              //       child: const Text("Click to Show Tooltip"),
-              //     ),
-              //   ),
-              // ),
-              // MTooltip(
-              //   context: context,
-              //   backgroundColor: Colors.black,
-              //   tooltipContent: Row(
-              //     children: [
-              //       Text(
-              //         "This is a Tooltip",
-              //         style: TextStyle(color: Colors.white),
-              //       ),
-              //       IconButton(
-              //         onPressed: () {
-              //           mc2.remove();
-              //           mc1.show();
-              //         },
-              //         icon: Icon(Icons.navigate_next),
-              //       ),
-              //     ],
-              //   ),
-              //   onRendered: () {
-              //     print("MC2 Rendered");
-              //   },
-              //   onDismiss: () {
-              //     print("MC2 Dismiss");
-              //   },
-              //   tooltipAlign: TooltipAlign.bottom,
-              //   waitDuration: Duration(seconds: 1),
-              //   fadeInDuration: Duration(seconds: 2),
-              //   showDuration: Duration(seconds: 4),
-              //   mTooltipController: mc2,
-              //   child: const Text("Image Tooltip Example"),
-              // ),
+              MTooltip(
+                context: context,
+                backgroundColor: Colors.black,
+                tooltipContent: Row(
+                  children: [
+                    Text(
+                      "This is a Tooltip",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        mc2.remove();
+                        mc1.show();
+                      },
+                      icon: Icon(Icons.navigate_next),
+                    ),
+                  ],
+                ),
+                onRendered: () {
+                  if (kDebugMode) {
+                    print("MC2 Rendered");
+                  }
+                },
+                onDismiss: () {
+                  if (kDebugMode) {
+                    print("MC2 Dismiss");
+                  }
+                },
+                tooltipAlign: TooltipAlign.bottom,
+                waitDuration: Duration(seconds: 1),
+                fadeInDuration: Duration(seconds: 2),
+                showDuration: Duration(seconds: 4),
+                mTooltipController: mc2,
+                child: const Text("Image Tooltip Example"),
+              ),
             ],
           ),
         ),

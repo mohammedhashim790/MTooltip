@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Updated negative vertical offset to 10.0
 - onRender and onDismiss Callbacks
 - Updated Example
+- [New] [TooltipApex](lib/src/constants/apex_position.dart) Position
 
 ## [1.0.2-beta] - 2025-11-14
 

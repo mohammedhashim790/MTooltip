@@ -176,21 +176,25 @@ class MTooltipState extends State<MTooltip>
   /// and wraps the tooltip content in a [CustomSingleChildLayout] that uses
   /// [MTooltipPositionDelegate] to position the overlay.
   void _newEntry() {
-    // final translation = widget.context
-    //     .findRenderObject()
-    //     ?.getTransformTo(null)
-    //     .getTranslation();
-    // final mediaQuery = MediaQuery.of(context).size;
-    //
-    // RenderBox parentBox = widget.context.findRenderObject() as RenderBox;
+    final viewPort = MediaQuery.of(context).size;
 
     overlayState = Overlay.of(context, debugRequiredFor: widget);
 
-    final RenderBox box = context.findRenderObject()! as RenderBox;
-    final Offset target = box.localToGlobal(
-      box.size.center(Offset.zero),
+    final RenderBox self = context.findRenderObject()! as RenderBox;
+    final Offset selfOffset = self.localToGlobal(
+      self.size.center(Offset.zero),
       ancestor: overlayState?.context.findRenderObject(),
     );
+
+    final Size selfBounds = self.size;
+    if (selfOffset.dx < 0 ||
+        selfOffset.dy < 0 ||
+        selfOffset.dx + selfBounds.width > viewPort.width ||
+        selfOffset.dy + selfBounds.height > viewPort.height) {
+      print('Widget is out of bounds!');
+    } else {
+      print('Widget is within bounds.');
+    }
 
     var tooltipWidget = createWidget();
 
@@ -198,9 +202,9 @@ class MTooltipState extends State<MTooltip>
       bottom: MediaQuery.maybeOf(context)?.viewInsets.bottom ?? 0.0,
       child: CustomSingleChildLayout(
         delegate: MTooltipPositionDelegate(
-          target: target,
+          target: selfOffset,
           verticalOffset:
-              (widget.tooltipAlign == TooltipAlign.bottom) ? 0.0 : 60.0,
+              (widget.tooltipAlign == TooltipAlign.bottom) ? 20.0 : 10.0,
           preferBelow: widget.tooltipAlign == TooltipAlign.bottom,
         ),
         child: IntrinsicWidth(child: IntrinsicHeight(child: tooltipWidget)),
@@ -300,9 +304,9 @@ class MTooltipState extends State<MTooltip>
     }
     _showTimer?.cancel();
     _showTimer = null;
-    if (_entry == null) {
-      _newEntry();
-    }
+    // if (_entry == null) {
+    _newEntry();
+    // }
     overlayState!.insert(_entry!);
     _controller.forward().then((_) => widget.onRendered?.call());
     _isConcealed = false;

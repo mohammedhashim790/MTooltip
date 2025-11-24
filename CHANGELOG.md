@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2-beta] - 2025-11-14
+
+### Added
+- Included Shadow to Tooltip
+- Updated negative vertical offset to 10.0
+- onRender and onDismiss Callbacks
+- Updated Example
 
 ## [1.0.2-beta] - 2025-11-14
 

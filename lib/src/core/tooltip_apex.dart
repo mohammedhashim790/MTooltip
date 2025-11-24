@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mtooltip/src/constants/apex_position.dart';
 
 import '../constants/tooltip_align.dart';
 
@@ -25,15 +26,18 @@ class TooltipApex extends ShapeBorder {
   /// Controls whether the apex (arrow) is placed on the top or bottom edge.
   final TooltipAlign tooltipAlign;
 
+  /// Controls whether the apex (arrow) is placed on the left or right.
+  final ApexPosition apexPosition;
+
   /// Create a [TooltipApex].
   ///
   /// - [usePadding] defaults to true and causes [dimensions] to return a
   ///   bottom inset of 20.0.
   /// - [tooltipAlign] selects apex placement and defaults to [TooltipAlign.bottom].
-  const TooltipApex({
-    this.usePadding = true,
-    this.tooltipAlign = TooltipAlign.bottom,
-  });
+  const TooltipApex(
+      {this.usePadding = true,
+      this.tooltipAlign = TooltipAlign.bottom,
+      this.apexPosition = ApexPosition.center});
 
   /// The extra space the shape requires. When [usePadding] is true this
   /// returns an [EdgeInsets] with 20px on the bottom; otherwise zero.

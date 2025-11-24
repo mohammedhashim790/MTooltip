@@ -5,6 +5,12 @@ import 'package:flutter/material.dart';
 import '../../mtooltip.dart';
 import 'mtooltip_position_delegate.dart';
 
+/// Function for when a tooltip is displayed.
+typedef MTooltipShowCallBack = void Function();
+
+/// Function for when a tooltip is displayed.
+typedef MTooltipDismissCallBack = void Function();
+
 /// A lightweight tooltip widget that displays [tooltipContent] in an [Overlay]
 /// positioned relative to the [child] widget's [BuildContext].
 ///
@@ -57,6 +63,12 @@ class MTooltip extends StatefulWidget {
   /// Duration used for the fade-out animation.
   final Duration fadeOutDuration;
 
+  /// Callback when the tooltip is rendered / displayed
+  MTooltipShowCallBack? onRendered = () => {};
+
+  /// Callback when the tooltip is dimissed
+  MTooltipDismissCallBack? onDismiss = () => {};
+
   /// Create an [MTooltip].
   ///
   /// - `mTooltipController` is required and will be attached to this state so
@@ -69,16 +81,18 @@ class MTooltip extends StatefulWidget {
     required this.child,
     required this.context,
     required this.tooltipContent,
+    required MTooltipController mTooltipController,
+    this.shadow,
+    this.padding,
+    this.onRendered,
+    this.onDismiss,
     this.backgroundColor = Colors.black54,
     this.barrierDismissible = true,
     this.tooltipAlign = TooltipAlign.bottom,
-    required MTooltipController mTooltipController,
     Duration? showDuration,
     Duration? waitDuration,
     Duration? fadeInDuration,
     Duration? fadeOutDuration,
-    this.shadow,
-    this.padding,
   })  : _mTooltipController = mTooltipController,
         waitDuration = waitDuration ?? Duration(seconds: 0),
         fadeInDuration = fadeInDuration ?? Duration(seconds: 1),
@@ -263,12 +277,14 @@ class MTooltipState extends State<MTooltip>
 
     if (immediately) {
       _entry!.remove();
+      widget.onDismiss?.call();
       return Future.value();
     }
 
     return _controller.reverse().then((_) {
       if (_entry != null) {
         _entry!.remove();
+        widget.onDismiss?.call();
       }
     });
   }
@@ -288,7 +304,7 @@ class MTooltipState extends State<MTooltip>
       _newEntry();
     }
     overlayState!.insert(_entry!);
-    _controller.forward();
+    _controller.forward().then((_) => widget.onRendered?.call());
     _isConcealed = false;
 
     if (widget.showDuration.inSeconds != 0) {

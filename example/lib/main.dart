@@ -13,7 +13,9 @@ class MyTooltipApp extends StatelessWidget {
     return MaterialApp(
       title: 'MTooltip Example',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromRGBO(0, 38, 79, 1.0),
+        ),
       ),
       home: const TooltipExample(title: 'MTooltip Example'),
     );
@@ -37,7 +39,7 @@ class _TooltipExampleState extends State<TooltipExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(widget.title),
       ),
       body: Center(
@@ -71,6 +73,12 @@ class _TooltipExampleState extends State<TooltipExample> {
                   waitDuration: Duration(seconds: 1),
                   fadeInDuration: Duration(seconds: 2),
                   showDuration: Duration(seconds: 4),
+                  onRendered: () {
+                    print("MC1 Rendered");
+                  },
+                  onDismiss: () {
+                    print("MC1 Dismiss");
+                  },
                   mTooltipController: mc1,
                   child: const Text("Explain this sentence"),
                 ),
@@ -95,6 +103,12 @@ class _TooltipExampleState extends State<TooltipExample> {
                       ),
                     ],
                   ),
+                  onRendered: () {
+                    print("MC2 Rendered");
+                  },
+                  onDismiss: () {
+                    print("MC2 Dismiss");
+                  },
                   tooltipAlign: TooltipAlign.bottom,
                   waitDuration: Duration(seconds: 1),
                   fadeInDuration: Duration(seconds: 2),

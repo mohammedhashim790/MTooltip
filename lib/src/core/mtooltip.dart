@@ -187,18 +187,31 @@ class MTooltipState extends State<MTooltip>
     );
 
     final Size selfBounds = self.size;
-    if (selfOffset.dx < 0 ||
-        selfOffset.dy < 0 ||
-        selfOffset.dx + selfBounds.width > viewPort.width ||
-        selfOffset.dy + selfBounds.height > viewPort.height) {
-      // TODO Must adjust apex position Here
-      // print('Widget is out of bounds!');
-    } else {
-      // Use the default or parametrised apex positioning.
-      // print('Widget is within bounds.');
+
+    // Edges based on center + size
+    final double halfWidth = selfBounds.width / 2;
+    final double halfHeight = selfBounds.height / 2;
+
+    final double left = selfOffset.dx - halfWidth;
+    final double right = selfOffset.dx + halfWidth;
+    final double top = selfOffset.dy - halfHeight;
+    final double bottom = selfOffset.dy + halfHeight;
+
+    if (left <= 0 ||
+        top <= 0 ||
+        right > viewPort.width ||
+        bottom > viewPort.height) {
+      // adjust apex and tooltip positioning with respect to positioning
+      if (right > viewPort.width) {
+        // print("overflow by right");
+      }
+
+      if (left <= 0) {
+        // print("overflow by left");
+      }
     }
 
-    var tooltipWidget = createWidget();
+    var tooltipWidget = _createWidget();
 
     var positionedWidget = Positioned.fill(
       bottom: MediaQuery.maybeOf(context)?.viewInsets.bottom ?? 0.0,
@@ -229,7 +242,7 @@ class MTooltipState extends State<MTooltip>
   ///
   /// Wraps [widget.tooltipContent] in a shaped container and applies a
   /// [FadeTransition] controlled by [_controller].
-  Widget createWidget() {
+  Widget _createWidget() {
     return Material(
       color: Colors.transparent,
       child: FadeTransition(

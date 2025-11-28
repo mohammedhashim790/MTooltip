@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.2-beta] - 2025-11-14
+## [1.0.3-beta] - 2025-11-27
 
 ### Added
 - Included Shadow to Tooltip
@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - onRender and onDismiss Callbacks
 - Updated Example
 - [New] [TooltipApex](lib/src/constants/apex_position.dart) Position
+  [New] autoPosition - a new parameter to auto position tooltip based to avoid overflow constraints. Auto-Positions apex position and overrides [TooltipAlign](lib/src/constants/tooltip_align.dart) parameter.
 
 ## [1.0.2-beta] - 2025-11-14
 

@@ -69,6 +69,10 @@ class MTooltip extends StatefulWidget {
   /// Callback when the tooltip is dimissed
   MTooltipDismissCallBack? onDismiss = () => {};
 
+  /// Handles Auto-Positioning, manages auto positioning of tooltip
+  /// Overrides [tooltipAlign] and [ApexPosition]
+  final bool autoPosition;
+
   /// Create an [MTooltip].
   ///
   /// - `mTooltipController` is required and will be attached to this state so
@@ -76,24 +80,25 @@ class MTooltip extends StatefulWidget {
   /// - If `showDuration` is zero seconds the tooltip will not auto-dismiss.
   /// - `tooltipAlign` controls whether the tooltip prefers to appear above or
   ///   below the target.
-  MTooltip({
-    super.key,
-    required this.child,
-    required this.context,
-    required this.tooltipContent,
-    required MTooltipController mTooltipController,
-    this.shadow,
-    this.padding,
-    this.onRendered,
-    this.onDismiss,
-    this.backgroundColor = Colors.black54,
-    this.barrierDismissible = true,
-    this.tooltipAlign = TooltipAlign.bottom,
-    Duration? showDuration,
-    Duration? waitDuration,
-    Duration? fadeInDuration,
-    Duration? fadeOutDuration,
-  })  : _mTooltipController = mTooltipController,
+  MTooltip(
+      {super.key,
+      required this.child,
+      required this.context,
+      required this.tooltipContent,
+      required MTooltipController mTooltipController,
+      this.shadow,
+      this.padding,
+      this.onRendered,
+      this.onDismiss,
+      this.backgroundColor = Colors.black54,
+      this.barrierDismissible = true,
+      this.tooltipAlign = TooltipAlign.bottom,
+      this.autoPosition = true,
+      Duration? showDuration,
+      Duration? waitDuration,
+      Duration? fadeInDuration,
+      Duration? fadeOutDuration})
+      : _mTooltipController = mTooltipController,
         waitDuration = waitDuration ?? Duration(seconds: 0),
         fadeInDuration = fadeInDuration ?? Duration(seconds: 1),
         fadeOutDuration = fadeOutDuration ?? Duration(seconds: 1),
@@ -124,6 +129,9 @@ class MTooltipState extends State<MTooltip>
   /// Cached overlay state used to insert the tooltip entry.
   OverlayState? overlayState;
 
+  /// TooltipApex, a tiny triangulated path identifying widget
+  TooltipApex tooltipApex = TooltipApex();
+
   @override
   void initState() {
     super.initState();
@@ -139,6 +147,8 @@ class MTooltipState extends State<MTooltip>
     // Attach this state to the external controller so UI callers can trigger
     // show/remove.
     mTooltipController.attach(this);
+
+    tooltipApex = TooltipApex(tooltipAlign: widget.tooltipAlign);
   }
 
   @override
@@ -197,31 +207,42 @@ class MTooltipState extends State<MTooltip>
     final double top = selfOffset.dy - halfHeight;
     final double bottom = selfOffset.dy + halfHeight;
 
-    if (left <= 0 ||
-        top <= 0 ||
-        right > viewPort.width ||
-        bottom > viewPort.height) {
+    if ((left <= 0 ||
+            top <= 0 ||
+            right >= viewPort.width ||
+            bottom >= viewPort.height) &&
+        widget.autoPosition) {
       // adjust apex and tooltip positioning with respect to positioning
-      if (right > viewPort.width) {
-        // print("overflow by right");
-      }
-
       if (left <= 0) {
         // print("overflow by left");
+        tooltipApex.updateApexPosition(ApexPosition.left);
+      }
+      if (top <= 0) {
+        tooltipApex.updateTooltipAlign(TooltipAlign.bottom);
+      }
+      if (right >= viewPort.width) {
+        // print("overflow by right");
+        tooltipApex.updateApexPosition(ApexPosition.right);
+      }
+      if (bottom >= viewPort.height) {
+        tooltipApex.updateTooltipAlign(TooltipAlign.top);
       }
     }
 
     var tooltipWidget = _createWidget();
 
+    var preferBelow = (widget.autoPosition
+            ? tooltipApex.tooltipAlign
+            : widget.tooltipAlign) ==
+        TooltipAlign.bottom;
+
     var positionedWidget = Positioned.fill(
       bottom: MediaQuery.maybeOf(context)?.viewInsets.bottom ?? 0.0,
       child: CustomSingleChildLayout(
         delegate: MTooltipPositionDelegate(
-          target: selfOffset,
-          verticalOffset:
-              (widget.tooltipAlign == TooltipAlign.bottom) ? 20.0 : 10.0,
-          preferBelow: widget.tooltipAlign == TooltipAlign.bottom,
-        ),
+            target: selfOffset,
+            verticalOffset: (preferBelow) ? 20.0 : 10.0,
+            preferBelow: preferBelow),
         child: IntrinsicWidth(child: IntrinsicHeight(child: tooltipWidget)),
       ),
     );
@@ -251,17 +272,16 @@ class MTooltipState extends State<MTooltip>
           index: 100,
           child: Container(
             decoration: ShapeDecoration(
-              color: widget.backgroundColor,
-              shadows: [
-                widget.shadow ??
-                    BoxShadow(
-                        color: Colors.black45,
-                        spreadRadius: 1.0,
-                        blurRadius: 8.0,
-                        blurStyle: BlurStyle.normal)
-              ],
-              shape: TooltipApex(tooltipAlign: widget.tooltipAlign),
-            ),
+                color: widget.backgroundColor,
+                shadows: [
+                  widget.shadow ??
+                      BoxShadow(
+                          color: Colors.black45,
+                          spreadRadius: 1.0,
+                          blurRadius: 8.0,
+                          blurStyle: BlurStyle.normal)
+                ],
+                shape: tooltipApex),
             child: Padding(
               padding: widget.padding ??
                   const EdgeInsets.only(

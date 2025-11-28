@@ -24,17 +24,27 @@ class TooltipApex extends ShapeBorder {
   final bool usePadding;
 
   /// Controls whether the apex (arrow) is placed on the top or bottom edge.
-  final TooltipAlign tooltipAlign;
+  TooltipAlign tooltipAlign;
 
   /// Controls whether the apex (arrow) is placed on the left or right.
-  final ApexPosition apexPosition;
+  ApexPosition apexPosition;
+
+  TooltipApex updateTooltipAlign(TooltipAlign tooltipAlign) {
+    this.tooltipAlign = tooltipAlign;
+    return this;
+  }
+
+  TooltipApex updateApexPosition(ApexPosition apexPosition) {
+    this.apexPosition = apexPosition;
+    return this;
+  }
 
   /// Create a [TooltipApex].
   ///
   /// - [usePadding] defaults to true and causes [dimensions] to return a
   ///   bottom inset of 20.0.
   /// - [tooltipAlign] selects apex placement and defaults to [TooltipAlign.bottom].
-  const TooltipApex(
+  TooltipApex(
       {this.usePadding = true,
       this.tooltipAlign = TooltipAlign.bottom,
       this.apexPosition = ApexPosition.center});

@@ -43,11 +43,11 @@ class _TooltipExampleState extends State<TooltipExample> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(widget.title),
       ),
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: MTooltip(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MTooltip(
               context: context,
               backgroundColor: Colors.blue,
               tooltipContent: Row(
@@ -77,15 +77,12 @@ class _TooltipExampleState extends State<TooltipExample> {
               mTooltipController: mc1,
               child: TextButton(
                 onPressed: () {
-                  mc2.show();
+                  mc1.show();
                 },
-                child: const Text("Click to Show Tooltip"),
+                child: const Text("Click to Show Tooltip 1"),
               ),
             ),
-          ),
-          Positioned(
-            left: -10,
-            child: MTooltip(
+            MTooltip(
               context: context,
               backgroundColor: Colors.black,
               tooltipContent: Row(
@@ -118,10 +115,15 @@ class _TooltipExampleState extends State<TooltipExample> {
               fadeInDuration: Duration(seconds: 2),
               showDuration: Duration(seconds: 4),
               mTooltipController: mc2,
-              child: const Text("Image Tooltip Example"),
+              child: TextButton(
+                onPressed: () {
+                  mc2.show();
+                },
+                child: const Text("Click to Show Tooltip 2"),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
